@@ -5,9 +5,13 @@
 <script>
 $(document).ready(function(){
   $("input").focus(function(){
+    var ch = $(this).attr("id");
     $(this).css("background-color", "yellow");
-    if($("input").attr("id") == "name"){
-
+    if(ch == "name"){
+      $("#test").text("이름을 입력하세요..");
+    }
+    if(ch == "email"){
+      $("#test").text("이메일을 입력하세요..");
     }
   });
   $("input").blur(function(){
@@ -20,7 +24,8 @@ $(document).ready(function(){
 
 Name: <input type="text" name="fullname" id="name"><br>
 Email: <input type="text" name="email" id="email">
-<p id="text"> enter your name and email </p>
+<p id="test"> enter your name and email </p>
+<span></span>
 
 </body>
 </html>

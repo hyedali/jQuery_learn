@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>CrayonShin-Chan</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+
+      $(document).ready(function(){
+        $("#title").on({
+          mouseenter: function(){
+            $(this).css("color", "red");
+          },
+          mouseleave: function(){
+            $(this).css("color", "blue");
+          },
+          click: function(){
+            $(this).css("color", "yellow");
+          }
+        });
+
+        $("#center_img").mouseenter(function(){
+          alert("짱구는 못말려!");
+        });
+
+        $("#ps").click(function(){
+          $("#choose").text("등장인물");
+
+          $.ajax({
+            url: 'ps.xml',
+            type: 'get',
+            dataType: 'xml',
+            timeout: 1000,
+            success: function(xmlDoc) {
+              Doc=xmlDoc;						  // 전역변수 초기화
+              count = $(xmlDoc).find('person').length;
+              displayPerson();
+            },
+            error: function() {
+              $('body').html('<div>Error!!</div>');
+            }
+          });
+
+          $("#ep").click(function(){
+            $("#choose").text("에피소드");
+            $('#attractionListArea').html("");
+          });
+
+        });
+
+        function displayPerson() {
+      	    var i, name='', age='', img='';
+      		tagList = '';
+      	      if(count > 0) {
+      	        for( i = 0; i < count; i += 1) {
+      	    	   	$record = $(Doc).find('person').eq(i);
+      				tagList += '<li><img style="width:150px;" src="' + $record.find('image').text() + '">';
+      				tagList += '<h2>' + $record.find('name').text() + '('+ $record.find('age').text() +')' + '</h2></li>';
+      	        }
+      	      }
+      	    $('#attractionListArea').html(tagList);
+      	    $('#attractionListArea').listview('refresh');
+      	}
+      });
+    </script>
+  </head>
+  <body>
+    <center>
+
+      <h1 id="title">짱구는 못말려!</h1>
+
+      <span class="container">
+        <div class="center">
+          <img class="img" src="Crayon.jpeg" alt="짱구는못말려" style="width:" id="center_img">
+        </div>
+
+        <div class="sidebar">
+          <ul>
+            <li id="ps">등장인물</li>
+            <li id="ep">에피소드</li>
+          </ul>
+        </div>
+      </span>
+
+      <div id="div2">
+        <h2 id="choose">원하는 목록 선택</h2>
+        <div id="wap">
+          <ul id="attractionListArea"></ul>
+        </div>
+      </div>
+
+    </center>
+  </body>
+</html>
+
+<!--
+http://apis.data.go.kr/1360000/AsosHourlyInfoService/getWthrDataList?serviceKey=%2BS00R%2FcCIFdXjOoUQTKEiz1%2BWyHu42Wzkgwea1PlvDX5jW4JlTKOtWF0AjQXZIEdv1jylVHXLi12YuDzt0Wm2Q%3D%3D&pageNo=1&numOfRows=10&dataType=XML&dataCd=ASOS&dateCd=HR&startDt=20220705&startHh=01&endDt=20220705&endHh=01&stnIds=143
+--->

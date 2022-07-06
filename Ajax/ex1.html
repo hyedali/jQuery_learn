@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+
+  <body>
+    <center>
+
+      <input type="number" id="a"/>
+      <input type="number" id="b"/>
+      <button onclick="add()">더해줘!</button>
+      <p id="result"></p>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <script>
+        function add(){
+          $.ajax({
+            url: "calc.php",
+            type: "get",
+            data: {
+              a: $('#a').val(),
+              b: $('#b').val(),
+            }
+          }).done(function(data){
+            $('#result').text(data);
+          });
+        }
+      </script>
+    </center>
+  </body>
+
+</html>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persons>
+  <person>
+    <name>짱구</name>
+    <age>5</age>
+    <image>img.jpeg</image>
+  </person>
+  <person>
+    <name>철수</name>
+    <age>5</age>
+    <image>img1.jpeg</image>
+  </person>
+  <person>
+    <name>유리</name>
+    <age>5</age>
+    <image>img3.jpeg</image>
+  </person>
+  <person>
+    <name>맹구</name>
+    <age>5</age>
+    <image>img2.jpg</image>
+  </person>
+  <person>
+    <name>훈이</name>
+    <age>5</age>
+    <image>img4.jpeg</image>
+  </person>
+</persons>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <!-- 테마 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+    <!-- 자바스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <!-- <p>안녕하세요. 제 이름은 <span id="name"></span>입니다.</p> -->
+
+    <br>
+    <input type="number" id="a"/>
+    <input type="number" id="b"/>
+    <button onclick="add()">더해줘!</button>
+    <p id="result"></p>
+
+    <br>
+    <div class="board">
+      <p id="result1">안녕하세요! 신짱구입니다.</p>
+      <button onclick="next()">다음</button>
+    </div>
+
+    <div class="board">
+      <img src="..." class="img-thumbnail" style="width:200px;" id="image"><br>
+      <button onclick="next2()">다음</button>
+    </div>
+
+    <div class="ajax_box">
+      <img src="..." class="img-thumbnail" style="width:200px;" id="image2"><br>
+      <p id="title"></p>
+      <button onclick="next3()" id="btn">다음</button>
+    </div>
+
+  </body>
+  <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <script>
+    // $.ajax({
+    //   url: "myname.php",
+    //   type: "get",
+    // }).done(function(data){
+    //   $("#name").text(data);
+    // });
+
+    function add(){
+      $.ajax({
+        url: "calc.php",
+        type: "get",
+        data: {
+          a: $('#a').val(),
+          b: $('#b').val(),
+        }
+      }).done(function(data){
+        $('#result').text(data);
+      });
+    }
+
+    var index=0;
+    function next(){
+      $.ajax({
+        url: "rel.php",
+        type: "get",
+        data: {index: index++}
+      }).done(function(data){
+        data = JSON.parse(data);
+        $('#result1').text('저의 '+data.desc+'은 '+data.name+'입니다!');
+        if(index>2) index=0;
+      })
+    }
+
+    var index2=0;
+    function next2(){
+      $.ajax({
+        url: "test.php",
+        type: "get",
+        data: {index: index2++}
+      }).done(function(data){
+        data = JSON.parse(data);
+        $('#image').attr('src',data.img);
+        $('#result2').text(data.name);
+        if(index2>4) index2=0;
+      })
+    }
+
+    var index3=0;
+    var title = '';
+    function next3(){
+      $.ajax({
+        url: "test1.php",
+        type: "get",
+        data: {index: index3++}
+      }).done(function(data){
+        data = JSON.parse(data);
+        $('#image2').attr('src',data.img);
+        title = htmlspecialchars(data.name);
+        $('#title').text(title);
+        if(index3>27) index2=0;
+      });
+    }
+  </script>
+</html>

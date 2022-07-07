@@ -1,0 +1,15 @@
+* {font-family: 'Gaegu', cursive;}
+.container{width:1000px;}
+.img{width:700px;}
+.center{width:700px;}
+.sidebar{width:300px;}
+#attractionListArea li {list-style-type:none; float:left;}
+#div2{text-align:center;}
+#wap {display:inline-block;}
+.container {width: 1000px; height: 500px; float:center; display:block;}
+.center {width: 600px; float:left; margin-left:200px; display:inline;}
+.sidebar {width: 250px; float:right; margin-right:100px; display:inline;}
+#ajax_box {width: 600px; height: 600px;}
+#poster {width: 250px; float:left; display:inline;}
+#text_area {width: 300px; float:right; display:inline;}
+#div2{display:block;}

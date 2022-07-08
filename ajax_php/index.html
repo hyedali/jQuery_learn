@@ -38,10 +38,22 @@
       <button onclick="next3()" id="btn">다음</button>
     </div>
 
+    <div class="db_ajax">
+      <ul>
+        <li>
+          <span>회차</span>
+          <span>제목</span>
+          <span>방영일</span>
+        </li>
+      </ul>
+      <button id="ok">조회하기</button>
+    </div>
+
   </body>
   <script src="//code.jquery.com/jquery.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script> -->
   <script>
+
     // $.ajax({
     //   url: "myname.php",
     //   type: "get",
@@ -99,10 +111,28 @@
       }).done(function(data){
         data = JSON.parse(data);
         $('#image2').attr('src',data.img);
-        title = htmlspecialchars(data.name);
-        $('#title').text(title);
+        //title = htmlspecialchars(data.name);
+        //$('#title').text(title);
         if(index3>27) index2=0;
       });
     }
+
+
+
+    $("#ok").on("click",function(){
+       var str = "";
+       $.ajax({
+         url: "select.php",
+         type: "get",
+       }).done(function(data){
+         alert(data);
+         data = JSON.parse(data);
+         for(var i=0; i<6; i++){
+           alert(data.num);
+           str += "<li> <span>"+ data.num +"</span> <span>"+ data.title +"</span> <span>"+ data.content +"</span> </li>";
+         }
+         alert(str);
+       });
+    });
   </script>
 </html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <title>게시판</title>
+  </head>
+  <script type="text/javascript">
+
+    let divEle = "<div></div>";
+    let liEle = "<li></li>";
+    let spanEle = "<span></span>";
+
+    $(document).ready(function(){
+      $('#root').html('<center></center>');
+
+      $('center').append(divEle);
+      $('center div:eq(0)').attr('id', 'title');
+
+      $('#title').append("<h2>게시판</h2>");
+      $('#title').append(divEle);
+      $('#title div').attr('id', 'boardTable');
+
+      $('#boardTable').append("<ul></ul>");
+      $('#boardTable ul').attr('id', 'boardList');
+
+      $('#boardList').append(liEle);
+      $('#boardList li:eq(0)').attr('class', 'lavel');
+      $('.lavel').css('list-style', 'none');
+
+      for(i=0; i<5; i++){
+        $('.lavel').append(spanEle);
+      }
+
+      $('.lavel span:eq(0)').attr('class', 'col1');
+      $('.lavel span:eq(0)').text('번호');
+
+      $('.lavel span:eq(1)').attr('class', 'col2');
+      $('.lavel span:eq(1)').text('제목');
+
+      $('.lavel span:eq(2)').attr('class', 'col3');
+      $('.lavel span:eq(2)').text('글쓴이');
+
+      $('.lavel span:eq(3)').attr('class', 'col4');
+      $('.lavel span:eq(3)').text('작성일');
+
+      $('.lavel span:eq(4)').attr('class','col5');
+      $('.lavel span:eq(4)').text('조회수');
+
+      for(j=0; j<5; j++){
+        $('.col'+(j+1)).css({
+          'display':'inline-block',
+          'text-align':'center',
+          'width':'200px'
+        });
+      }
+
+      $.ajax({
+        url: 'board.php',
+        type:'get',
+        dataType:'json',
+        success:function(data){
+          alert(JSON.parse(data));
+        }
+      });
+
+    });
+  </script>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

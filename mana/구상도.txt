@@ -1,0 +1,5 @@
+회원관리프로그램
+
+- 로그인 및 회원가입 : insert, select, update, delete 기능 사용
+- 게시판 : insert, select, update, delete 기능 사용
+	로그인 시 ajax로 게시판 로딩(document)

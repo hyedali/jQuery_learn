@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  </head>
+  <body>
+    <center>
+      <input type="checkbox" value="A" id="all"> 모두
+      <hr>
+      <input type="checkbox">짱구<br>
+      <input type="checkbox">철수<br>
+      <input type="checkbox">유리<br>
+      <input type="checkbox">훈이<br>
+      <input type="checkbox">맹구
+
+      <script>
+
+        $("#all").click(function(){
+          var checked = $("#all").is(":checked");
+
+          if(checked){
+            $("input:checkbox").prop("checked", true);
+          }
+        })
+
+      </script>
+    </center>
+  </body>
+</html>

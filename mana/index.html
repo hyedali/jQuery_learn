@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>관리프로그램</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript">
+
+    const trEle = "<tr></tr>";
+    const tdEle = "<td></td>";
+
+      $(document).ready(function(){
+        $("#root2").hide();
+
+        let loginBox = [
+          ["아이디","<input type='text' name='uerid' id='uerid'/>"],
+          ["비밀번호","<input type='password' name='pass' id='pass'/>"],
+          ["", "<a id='move' href='#'>회원가입</a>&nbsp;&nbsp;<button id='submitBtn'>로그인</button>"]
+        ];
+
+        $("div").html("<center></center>");
+
+        $("center").html("<div id='root'><br><h1>로그인</h1><form></form></div>");
+
+        $("form").attr({
+          name: "loginForm",
+          id: "loginForm",
+          action: "login.php",
+          method: "post"
+        });
+
+        $("#loginForm").html("<table></table>");
+        $("#loginForm table").attr("id", "login");
+        $("#login").append(trEle,trEle,trEle);
+        $("#login tr:eq(0)").append(tdEle,tdEle);
+        $("#login tr:eq(1)").append(tdEle,tdEle);
+        $("#login tr:eq(2)").append(tdEle,tdEle);
+
+        for(i=0; i<3; i++){
+          for(j=0; j<2; j++){
+            $("tr:eq("+ i +") td:eq("+ j +")").html(loginBox[i][j]);
+          }
+        }
+
+        //로그인 유효성 체크 및 submit
+        $("#submitBtn").click(function(){
+          let uerid = $("#uerid").val();
+          let pass = $("#pass").val();
+
+          if(uerid == ""){
+            $("#uerid").focus();
+            alert("아이디를 입력해주세요!");
+            return false;
+          }
+
+          if(pass == ""){
+            $("#pass").focus();
+            alert("비밀번호를 입력해주세요!");
+            return false;
+          }
+
+          $("#loginForm").submit();
+        });
+
+        $("#move").click(function(){
+          $("#root").hide();
+          registerForm();
+        })
+      });
+
+      //회원가입폼
+      function registerForm(){
+        $("center").append("<div id='root2'></div>");
+
+        $("#root2").append("<br><h1>회원가입</h1><p>");
+        $("#root2").append("<form><table id='registerTable'></table><form>");
+        $("#root2 form").attr({
+          name: "registerForm",
+          id: "registerForm",
+          action: "register.php",
+          method: "post"
+        })
+        $("#registerTable").append(trEle,trEle,trEle,trEle,trEle,trEle);
+
+        for(n=0; n<6; n++){
+          $("#registerTable tr:eq("+n+")").append(tdEle,tdEle);
+        }
+
+        let registForm = [
+          ["아이디", "<input type='text' name='userid' id='userid'/>"],
+          ["비밀번호", "<input type='password' name='passwd' id='passwd'/>"],
+          ["비밀번호 확인", "<input type='password' name='checkPass' id='checkPass'/>"],
+          ["이름", "<input type='text' name='name' id='name'/>"],
+          ["이메일","<input type='text' name='email1' id='email1'/>@<input type='text' name='email2' id='email2'/>"],
+          ["","<input type='reset'/>&nbsp&nbsp&nbsp<button id='registerBtn'>가입하기</button>"]
+        ];
+
+        for(i=0; i<6; i++){
+          for(j=0; j<2; j++){
+            $("#registerTable tr:eq("+ i +") td:eq("+ j +")").html(registForm[i][j]);
+          }
+        }
+
+      //회원가입 유효성 체크 및 submit
+      $("#registerBtn").click(function(){
+        let userid = $('#userid').val();
+        let passwd = $('#passwd').val();
+        let checkPass = $('#checkPass').val();
+        let name = $('#name').val();
+        let email1 = $('#eamil1').val();
+        let email2 = $('#email2').val();
+
+        if(userid == ""){
+          $('#userid').focus();
+          alert("아이디를 입력해주세요");
+          return false;
+        }
+
+        if(passwd == ""){
+          $('#passwd').focus();
+          alert("비밀번호를 입력해주세요");
+          return false;
+        }
+
+        if(passwd != checkPass){
+          $('#checkPass').focus();
+          alert("비밀번호가 일치하지 않숩니다.");
+          return false;
+        }
+
+        if(name == ""){
+          $('#name').focus();
+          alert("이름을 입력해주세요");
+          return false;
+        }
+
+        if(email1 == "" || email2 == ""){
+          $('#email1').focus();
+          alert("이메일을 입력해주세요");
+          return false;
+        }
+
+        //$("#registerForm").submit();
+      });
+      }
+    </script>
+  </head>
+  <body>
+    <div>
+      <script>
+
+
+
+        // function login(){
+        //   $.ajax({
+        //     url: "login.php",
+        //     type: "get",
+        //     data: {
+        //       uerid: $("#uerid").val(),
+        //       pass: $("#pass").val()
+        //     }
+        //   }).done(function(data){
+        //     //alert("안녕");
+        //     $("#text").text("안녕");
+        //     //alert(data);
+        //   });
+        // }
+      </script>
+    </div>
+
+
+    <!-- <div id='root'></div> -->
+  </body>
+</html>

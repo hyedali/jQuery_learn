@@ -17,7 +17,7 @@
     $regdate = $row['regdate'];
     $cnt = $row['cnt'];
 */
-    array_push($arrayList, array('title'=>$row['title'], 'writer'=>$row['writer'], 'regdate'=>$row['regdate'], 'cnt'=>$row['cnt']));
+    array_push($arrayList, array('title'=>$row['title'], 'writer'=>$row['writer'], 'regdate'=>$row['regdate'], 'cnt'=>$row['cnt'], 'seq'=>$row['seq']));
     //echo($title.$writer.$regdate."/".$cnt.'<br>');
   }
 

@@ -84,9 +84,9 @@
           action: "register.php",
           method: "post"
         })
-        $("#registerTable").append(trEle,trEle,trEle,trEle,trEle,trEle);
 
-        for(n=0; n<6; n++){
+        for(n=0; n<8; n++){
+          $("#registerTable").append(trEle);
           $("#registerTable tr:eq("+n+")").append(tdEle,tdEle);
         }
 
@@ -95,11 +95,14 @@
           ["비밀번호", "<input type='password' name='passwd' id='passwd'/>"],
           ["비밀번호 확인", "<input type='password' name='checkPass' id='checkPass'/>"],
           ["이름", "<input type='text' name='name' id='name'/>"],
-          ["이메일","<input type='text' name='email1' id='email1'/>@<input type='text' name='email2' id='email2'/>"],
+          ["이메일","<input type='text' name='email1' id='email1' style='width:150px;'/>@<input type='text' name='email2' id='email2' style='width:150px;'/>"],
+          ["전화번호",
+           "<input type='text' name='number1' id='number1' style='width:100px;' value='010'/>-<input type='text' name='number2' id='number2' style='width:100px;'/>-<input type='text' name='number3' id='number3' style='width:100px;'/>"],
+          ["주소","<input type='text' name='addr' style='width:400px;'/>"],
           ["","<input type='reset'/>&nbsp&nbsp&nbsp<button id='registerBtn'>가입하기</button>"]
         ];
 
-        for(i=0; i<6; i++){
+        for(i=0; i<8; i++){
           for(j=0; j<2; j++){
             $("#registerTable tr:eq("+ i +") td:eq("+ j +")").html(registForm[i][j]);
           }
@@ -113,6 +116,8 @@
         let name = $('#name').val();
         let email1 = $('#eamil1').val();
         let email2 = $('#email2').val();
+        let number2 = $('#number2').val();
+        let number3 = $('#number3').val();
 
         if(userid == ""){
           $('#userid').focus();
@@ -144,33 +149,19 @@
           return false;
         }
 
+        if((number2 == "" && number3 != "") || (number2 != "" && number3 == "")){
+          $('#number2').focus();
+          alert('전화번호를 완벽하게 입력해주세요');
+          return false;
+        }
+
         //$("#registerForm").submit();
       });
       }
     </script>
   </head>
   <body>
-    <div>
-      <script>
-
-
-
-        // function login(){
-        //   $.ajax({
-        //     url: "login.php",
-        //     type: "get",
-        //     data: {
-        //       uerid: $("#uerid").val(),
-        //       pass: $("#pass").val()
-        //     }
-        //   }).done(function(data){
-        //     //alert("안녕");
-        //     $("#text").text("안녕");
-        //     //alert(data);
-        //   });
-        // }
-      </script>
-    </div>
+    <div></div>
 
 
     <!-- <div id='root'></div> -->

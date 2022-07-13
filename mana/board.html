@@ -9,17 +9,26 @@
   </head>
   <script type="text/javascript">
 
-    let divEle = "<div></div>";
-    let liEle = "<li></li>";
-    let spanEle = "<span></span>";
+    const divEle = "<div></div>";
+    const liEle = "<li class='lavel'></li>";
+    const spanEle = "<span></span>";
+
+    const trEle = "<tr></tr>";
+    const tdEle = "<td></td>";
+
+    function spanClassEle(i){
+      return "<span class='col"+i+"'></span>";
+    }
 
     $(document).ready(function(){
+
       $('#root').html('<center></center>');
 
       $('center').append(divEle);
       $('center div:eq(0)').attr('id', 'title');
 
       $('#title').append("<h2>게시판</h2>");
+
       $('#title').append(divEle);
       $('#title div').attr('id', 'boardTable');
 
@@ -28,6 +37,7 @@
 
       $('#boardList').append(liEle);
       $('#boardList li:eq(0)').attr('class', 'lavel');
+      //$('.lavel').attr('style', 'list-style:none;');
       $('.lavel').css('list-style', 'none');
 
       for(i=0; i<5; i++){
@@ -49,24 +59,62 @@
       $('.lavel span:eq(4)').attr('class','col5');
       $('.lavel span:eq(4)').text('조회수');
 
-      for(j=0; j<5; j++){
-        $('.col'+(j+1)).css({
+      $('.lavel').append("<hr>");
+
+      for(p=0; p<5; p++){
+        $('.col'+(p+1)).css({
           'display':'inline-block',
           'text-align':'center',
-          'width':'200px'
+          'width':'120px'
         });
       }
 
       $.ajax({
         url: 'board.php',
-        type:'get',
         dataType:'json',
         success:function(data){
-          alert(JSON.parse(data));
+          //var data = JSON.parse(data);
+          //alert(data.length);
+          for(i=0; i<data.length; i++){
+            $('#boardList').append(liEle);
+            //alert(data[i].title);
+            for(j=1; j<6; j++){
+              $('.lavel:eq('+(i+1)+')').append(spanClassEle(j)).css('list-style', 'none');
+              $('.lavel:eq('+(i+1)+') .col'+j).css({
+                'display':'inline-block',
+                'text-align':'center',
+                'width':'120px'
+              })
+            }
+            $('.lavel:eq('+(i+1)+') .col1').text(i+1);
+            $('.lavel:eq('+(i+1)+') .col2').html("<a href='#' onclick='content("+data[i].seq+","+i+")'style='text-decoration: none;'>"+data[i].title+"</a>");
+            $('.lavel:eq('+(i+1)+') .col3').text(data[i].writer);
+            $('.lavel:eq('+(i+1)+') .col4').text(data[i].regdate.substr(0,10));
+            $('.lavel:eq('+(i+1)+') .col5').text(data[i].cnt);
+          }
         }
       });
 
     });
+
+    function content(num, index){
+      $('center').append('<br><div id="boardContent"></div><br>');
+      $('#boardContent').attr('style','width:600px; border: 1px solid;')
+
+      $.ajax({
+        url:'board_view.php',
+        type: 'get',
+        data:{num: num},
+        dataType: 'json',
+        success:function(data){
+          //alert(data);
+          //alert(data[0].content+ data[0].cnt);
+          $('#boardContent').text(data[0].content);
+          $('.lavel:eq('+(index+1)+') .col5').text(data[0].cnt);
+        }
+      })
+
+    }
   </script>
   <body>
     <div id="root"></div>

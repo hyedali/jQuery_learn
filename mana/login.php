@@ -24,7 +24,7 @@
       </script>");
     }
 
-    echo("게시판 들어가자!!!");
+    echo("<script>location.href='board.html';</script>");
   }else{
     echo("<script>history.back();</script>");
   }

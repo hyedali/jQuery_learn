@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <title>회원정보</title>
+    <script type="text/javascript">
+      const liEle = "<li></li>";
+
+      $(document).ready(function(){
+        $('#root').html("<center><div id='container'></div></center>");
+        $('#container').attr('style', 'width:1000px; height:800px;');
+
+        $('#container').append("<h1>회원정보</h1>");
+
+        $('#container').append("<div id='side'></div>");
+        $('#side').attr('style', 'border: 1px solid; width:30%; height:700px; float:left;');
+
+        $('#container').append('<div id="content"></div>');
+        $('#content').attr('style', 'border: 1px solid; width:69%; height:700px; float:right;');
+
+        $('#side').append("<ul id='listUl'><ul>");
+
+          $.ajax({
+            url: 'member_select.php',
+            dataType:'json',
+            success: function(request){
+              alert(request.responseText);
+            },
+            error:function(request, status, error){
+
+          		alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+
+          	}
+          });
+
+        // $('#listUl').append(liEle,liEle,liEle);
+        // $('#listUl li:eq(0)').text('지우');
+        // $('#listUl li:eq(1)').text('로켓단');
+        // $('#listUl li:eq(2)').text('도라에몽');
+
+
+
+
+      });
+
+    </script>
+  </head>
+  <body>
+    <div id='root'><div>
+  </body>
+</html>

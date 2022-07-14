@@ -23,10 +23,13 @@
         history.back();
       </script>");
     }
+    if($row['level'] == 1){
+      echo("<script>location.href='member.html';</script>");
+    }
 
     echo("<script>location.href='board.html';</script>");
   }else{
     echo("<script>history.back();</script>");
   }
-
+  //카운트 값을 원함
  ?>

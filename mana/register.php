@@ -2,13 +2,16 @@
 
   $userid = $_POST['userid'];
   $passwd = $_POST['passwd'];
-  $checkPass = $_POST['checkPass'];
+  //$checkPass = $_POST['checkPass'];
   $name = $_POST['name'];
   $email = $_POST['email1']."@".$_POST['email2'];
   $number = $_POST['number1'].$_POST['number2'].$_POST['number3'];
   $addr = $_POST['addr'];
 
   $con = mysqli_connect('localhost', 'root', '', 'jquery');
+
+  $user_check_sql = "select * from user where id='$userid'";
+  $user_check_result = mysqli_query($con, $user_check_sql);
 
   if($number == "010"){
     $user_insert_sql = "insert into user(id, pass, name, email, addr) ";
@@ -29,4 +32,5 @@
     </script>");
   }
 
+  //insert힘
  ?>

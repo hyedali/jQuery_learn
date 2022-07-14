@@ -24,5 +24,5 @@
   echo(json_encode($arrayList,JSON_UNESCAPED_UNICODE));
 
   mysqli_close($con);
-
+ //모든 쿼리를 가져옴
  ?>

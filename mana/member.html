@@ -8,6 +8,12 @@
     <title>회원정보</title>
     <script type="text/javascript">
       const liEle = "<li></li>";
+      const trEle = '<tr></tr>';
+      const tdEle = '<td></td>';
+      const btnEle = '<button></buttn>';
+
+      var userName = [];
+      var cnt = 0;
 
       $(document).ready(function(){
         $('#root').html("<center><div id='container'></div></center>");
@@ -21,31 +27,262 @@
         $('#container').append('<div id="content"></div>');
         $('#content').attr('style', 'border: 1px solid; width:69%; height:700px; float:right;');
 
-        $('#side').append("<ul id='listUl'><ul>");
+        $('#side').append("<ul id='listUl' style='list-style:none; padding:10px;'></ul>");
 
-          $.ajax({
-            url: 'member_select.php',
-            dataType:'json',
-            success: function(request){
-              alert(request.responseText);
-            },
-            error:function(request, status, error){
+        $('#content').append('<div id="contentBox" style="height:170px;"></div>');
 
-          		alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        $('#contentBox').append('<div><img src="https://via.placeholder.com/150" id="profile"></div>');
+        $('#contentBox div').attr('style', 'float:left; width:170px; padding-top:10px; display:inline;');
 
-          	}
+        $('#contentBox').append('<div id="content-table"><table id="formTable"></table></div>');
+        $('#content-table').attr('style', 'float:right; width:500px; display:inline;');
+        for(i=0; i<6; i++){
+          $('#formTable').append(trEle);
+          $('#formTable tr:eq('+i+')').append(tdEle,tdEle);
+        }
+
+        let registForm = [
+          ["아이디", "<input type='text' name='userid' id='userid' disabled/>"],
+          ["비밀번호", "<input type='password' name='passwd' id='passwd' disabled/>"],
+          ["이름", "<input type='text' name='name' id='name'/>"],
+          ["이메일","<input type='text' name='email1' id='email1' style='width:150px;'/>@<input type='text' name='email2' id='email2' style='width:150px;'/>"],
+          ["전화번호",
+           "<input type='text' name='number1' id='number1' style='width:100px;' value='010'/>-<input type='text' name='number2' id='number2' style='width:100px;'/>-<input type='text' name='number3' id='number3' style='width:100px;'/>"],
+          ["주소","<input type='text' id='addr' name='addr' style='width:400px;'/>"]
+        ];
+
+        for(i=0; i<6; i++){
+          for(j=0; j<2; j++){
+            $('#formTable tr:eq('+i+') td:eq('+j+')').html(registForm[i][j]);
+          }
+        }
+
+        listPrint();
+
+          $('#content').append('<div id="btnBox" style="height:100px;"></div>');
+
+          $('#btnBox').append(btnEle);
+          $('#btnBox button:eq(0)').attr({
+            id: 'createBtn',
+            onclick: "create()",
           });
+          $('#createBtn').html('생성');
 
-        // $('#listUl').append(liEle,liEle,liEle);
-        // $('#listUl li:eq(0)').text('지우');
-        // $('#listUl li:eq(1)').text('로켓단');
-        // $('#listUl li:eq(2)').text('도라에몽');
+          $('#btnBox').append(btnEle);
+          $('#btnBox button:eq(1)').attr({
+            id: 'searchBtn',
+            onclick: "search()",
+          });
+          $('#searchBtn').html('검색');
 
+          $('#btnBox').append(btnEle);
+          $('#btnBox button:eq(2)').attr({
+            id: 'updateBtn',
+            onclick: "update()",
+          });
+          $('#updateBtn').html('수정');
 
+          $('#btnBox').append(btnEle);
+          $('#btnBox button:eq(3)').attr({
+            id: 'deleteBtn',
+            onclick: "_delete()",
+          });
+          $('#deleteBtn').html('삭제');
 
+          $('#btnBox').append(btnEle);
+          $('#btnBox button:eq(4)').attr({
+            id: 'cancleBtn',
+            onclick: "cancle()",
+          });
+          $('#cancleBtn').html('취소');
 
       });
 
+      function listPrint(){
+        $.ajax({
+          url: 'member_select.php',
+          dataType:'json',
+          success: function(data){
+            cnt = data.length;
+            for(i=0; i<cnt; i++){
+              $('#listUl').append(liEle);
+              $('#listUl li:eq('+i+')').html('<p class="clickme">'+data[i].name+'</p>');
+              userName[i] = data[i].name;
+            }
+
+            $("p").click(function(){
+              $.ajax({
+                url: 'infoSelect.php',
+                type: 'get',
+                dataType: 'json',
+                data:{name:$(this).html()},
+                success: function(data){
+                  let email = data[0].email.split('@');
+
+                  $('#userid').val(data[0].id);
+                  $('#passwd').val(data[0].pass);
+                  $('#name').val(data[0].name);
+                  $('#email1').val(data[0].email);
+                  $('#email1').val(email[0]);
+                  $('#email2').val(email[1]);
+                  $('#number1').val(data[0].number.substr(0,2));
+                  $('#number2').val(data[0].number.substr(2,4));
+                  $('#number3').val(data[0].number.substr(6,4));
+                  $('#addr').val(data[0].addr);
+                }
+              });
+            });
+          }
+        });
+      }
+
+      //취소 버튼
+      function cancle(){
+        $('#userid').val("");
+        $('#passwd').val("");
+        $("#userid").attr("disabled", true); //해제
+        $("#passwd").attr("disabled", true); //해제
+        $('#name').val("");
+        $('#email1').val("");
+        $('#email1').val("");
+        $('#email2').val("");
+        $('#number1').val("010");
+        $('#number2').val("");
+        $('#number3').val("");
+        $('#addr').val("");
+      }
+
+      //생성 버튼
+      function create(){
+        $("#userid").attr("disabled", false); //해제
+        $("#passwd").attr("disabled", false); //해제
+
+        let userid = $('#userid').val();
+        let passwd = $('#passwd').val();
+        let name = $('#name').val();
+        let email1 = $('#email1').val();
+        let email2 = $('#email2').val();
+        let number2 = $('#number2').val();
+        let number3 = $('#number3').val();
+
+        if(userid == ""){
+          $('#userid').focus();
+          alert("아이디를 입력해주세요");
+          return false;
+        }
+
+        if(passwd == ""){
+          $('#passwd').focus();
+          alert("비밀번호를 입력해주세요");
+          return false;
+        }
+
+        if(name == ""){
+          $('#name').focus();
+          alert("이름을 입력해주세요");
+          return false;
+        }
+
+        if(email1 == "" || email2 == ""){
+          $('#email1').focus();
+          alert("이메일을 입력해주세요");
+          return false;
+        }
+
+        if((number2 == "" && number3 != "") || (number2 != "" && number3 == "")){
+          $('#number2').focus();
+          alert('전화번호를 완벽하게 입력해주세요');
+          return false;
+        }
+
+        $.ajax({
+          url: 'register.php',
+          type: 'post',
+          data:{
+            userid: userid,
+            passwd: passwd,
+            name: name,
+            email1: email1,
+            email2: email2,
+            number1: $('#number1').val(),
+            number2: number2,
+            number3: number3,
+            addr: $('#addr').val(),
+          },
+          success: function(){
+            cancle();
+            listPrint();
+          }
+        })
+      }
+
+      //삭제 버튼
+      function _delete(){
+        let id = $('#userid').val();
+        if(id != ''){
+          if(confirm('정말로 삭제하시겠습니까?')){
+            $.ajax({
+              url: 'member_delete.php',
+              type: 'get',
+              data:{userid: id},
+              success: function(){
+                cancle();
+                listPrint();
+              }
+            });
+          }
+        }
+      }
+
+      //검색 버튼
+      function search(){
+        let name = $('#name').val();
+        if(name != ''){
+          alert('함수안에는 들어옴');
+          $.ajax({
+            url: 'infoSelect.php',
+            type: 'get',
+            dataType: 'json',
+            data:{name:name},
+            success: function(data){
+              let email = data[0].email.split('@');
+
+              $('#userid').val(data[0].id);
+              $('#passwd').val(data[0].pass);
+              $('#name').val(data[0].name);
+              $('#email1').val(data[0].email);
+              $('#email1').val(email[0]);
+              $('#email2').val(email[1]);
+              $('#number1').val(data[0].number.substr(0,2));
+              $('#number2').val(data[0].number.substr(2,4));
+              $('#number3').val(data[0].number.substr(6,4));
+              $('#addr').val(data[0].addr);
+            }
+          });
+        }
+      }
+
+      //수정 버튼
+      function update(){
+        //alert($('#userid').val()+"/"+$('#name').val()+"/"+$('#email1').val()+"/"+$('#number1').val()+"/"+$('#number2').val()+"/"+$('#number3').val()+"/"+$('#addr').val());
+        $.ajax({
+          url: 'member_update.php',
+          type: 'post',
+          data: {
+            userid:$('#userid').val(),
+            name: $('#name').val(),
+            email1: $('#email1').val(),
+            email2: $('#email2').val(),
+            number1: $('#number1').val(),
+            number2: $('#number2').val(),
+            number3: $('#number3').val(),
+            addr: $('#addr').val()
+          },
+          success:function(){
+            alert('수정 성공!')
+          }
+        })
+      }
     </script>
   </head>
   <body>

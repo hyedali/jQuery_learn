@@ -22,22 +22,6 @@
 
   mysqli_close($con);
 
-/*
-  $('#boardContent').append('<table></table>');
-  $('#boardContent table').attr('id', 'boardView');
-
-  for(i=0; i<5; i++){
-    $('#boardView').append(trEle);
-    for(j=0; j<2; j++){
-      $('#boardView tr:eq('+i+')').append(tdEle);
-    }
-  }
-
-  $('#boardView tr:first-child td:first-child').text("제목");
-  $('#boardView tr:nth-child(2) td:first-child').text("작성자");
-  $('#boardView tr:nth-child(3) td:first-child').text("내용");
-  $('#boardView tr:nth-child(4) td:first-child').text("작성일");
-  $('#boardView tr:last-child td:first-child').text("조회수");
-*/
+  //seq값을 이용해서 모든 쿼리를 불러옴.(=>내용과 조회수만 사용)
 
  ?>

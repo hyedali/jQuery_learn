@@ -24,7 +24,8 @@
     array_push($arrayList,
     array('id'=>$row['id'], 'pass'=>$row['pass'], 'name'=>$row['name'], 'email'=>$row['email'], 'level'=>$row['level'], 'number'=>$row['number'], 'addr'=>$row['addr']));
 
-    echo(json_encode($arrayList,JSON_UNESCAPED_UNICODE));
   }
+  echo(json_encode($arrayList,JSON_UNESCAPED_UNICODE));
 
+  //모든 속성의 결과를 받아옴
  ?>

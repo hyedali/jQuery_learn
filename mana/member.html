@@ -12,6 +12,8 @@
       const tdEle = '<td></td>';
       const btnEle = '<button></buttn>';
 
+      let checked = 1;
+
       var userName = [];
       var cnt = 0;
 
@@ -42,7 +44,7 @@
         }
 
         let registForm = [
-          ["아이디", "<input type='text' name='userid' id='userid' disabled/>"],
+          ["아이디", "<input type='text' name='userid' id='userid' disabled/><a id='check'>중복확인</a>"],
           ["비밀번호", "<input type='password' name='passwd' id='passwd' disabled/>"],
           ["이름", "<input type='text' name='name' id='name'/>"],
           ["이메일","<input type='text' name='email1' id='email1' style='width:150px;'/>@<input type='text' name='email2' id='email2' style='width:150px;'/>"],
@@ -57,9 +59,32 @@
           }
         }
 
+        $('#check').click(function(){
+          let checkid = $('#userid').val();
+          if(checkid == ""){
+            alert('아이디를 입력해주세요!');
+          }
+          $.ajax({
+            url: 'check_id.php',
+            type: 'post',
+            dataType: 'json',
+            data: {userid:checkid},
+            success: function(data){
+              checked = data.cnt;
+              if(checked == 1){
+                alert('사용불가능한 아이디입니다.');
+                $('#userid').val("");
+                $('#userid').focus();
+                return false;
+              }
+              alert('사용가능한 아이디입니다.')
+            }
+          });
+        });
+
         listPrint();
 
-          $('#content').append('<div id="btnBox" style="height:100px;"></div>');
+          $('#content').append('<div id="btnBox" style="height:30px;"></div>');
 
           $('#btnBox').append(btnEle);
           $('#btnBox button:eq(0)').attr({
@@ -96,6 +121,14 @@
           });
           $('#cancleBtn').html('취소');
 
+          $('#content').append('<div id="userContentBox" style="height:200px;"></div>');
+
+          $('#userContentBox').append('<form id="listForm"><table id="chTable" style="float:left;"></table></form>');
+
+          $('#listForm').attr({
+            action: 'board_delete.php',
+            method: 'post',
+          })
       });
 
       function listPrint(){
@@ -113,7 +146,7 @@
             $("p").click(function(){
               $.ajax({
                 url: 'infoSelect.php',
-                type: 'get',
+                type: 'post',
                 dataType: 'json',
                 data:{name:$(this).html()},
                 success: function(data){
@@ -129,6 +162,8 @@
                   $('#number2').val(data[0].number.substr(2,4));
                   $('#number3').val(data[0].number.substr(6,4));
                   $('#addr').val(data[0].addr);
+
+                  contentTabel();
                 }
               });
             });
@@ -168,6 +203,12 @@
         if(userid == ""){
           $('#userid').focus();
           alert("아이디를 입력해주세요");
+          return false;
+        }
+
+        if(checked == 1){
+          $('#userid').focus();
+          alert("아이디 중복체크를 해주세요");
           return false;
         }
 
@@ -223,7 +264,7 @@
           if(confirm('정말로 삭제하시겠습니까?')){
             $.ajax({
               url: 'member_delete.php',
-              type: 'get',
+              type: 'post',
               data:{userid: id},
               success: function(){
                 cancle();
@@ -241,7 +282,7 @@
           alert('함수안에는 들어옴');
           $.ajax({
             url: 'infoSelect.php',
-            type: 'get',
+            type: 'post',
             dataType: 'json',
             data:{name:name},
             success: function(data){
@@ -283,6 +324,40 @@
           }
         })
       }
+
+      function contentTabel(){
+        $.ajax({
+          url: 'board_select_writer.php',
+          type: 'post',
+          dataType: 'json',
+          data: {name:$('#name').val()},
+          success: function(data){
+            $('#chTable').html("");
+            $('#chTable').append('<tr></tr>');
+            $('#chTable tr:eq(0)').append('<td><input type="checkBox" id="CKall"/></td>');
+            $('#chTable tr:eq(0)').append('<td>ALL</td>');
+            for(i=0; i<data.length; i++){
+              $('#chTable').append('<tr></tr>');
+              $('#chTable tr:eq('+(i+1)+')').append('<td><input type="checkBox" name="CL[]" value="'+data[i].seq+'"/></td>');
+              $('#chTable tr:eq('+(i+1)+')').append('<td>'+data[i].title+'</td>');
+              $('#chTable tr:eq('+(i+1)+')').append('<td>'+data[i].cnt+'</td>');
+            }
+
+            $('#CKall').click(function(){
+              if($('#CKall').is(':checked') == true){
+                $('input[name="CL[]"]').attr('checked','true');
+              }
+            });
+
+            $('#chTable').append('<tr></tr>');
+            $('#chTable tr:eq('+(i+1)+')').append('<td><input type="submit"></td>');
+          }
+        });
+      }
+
+      // function ListDele(){
+      //   for()
+      // }
     </script>
   </head>
   <body>

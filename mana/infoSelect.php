@@ -2,7 +2,7 @@
   include 'DB.php';
 
   $arrayList = array();
-  $name = $_GET['name'];
+  $name = $_POST['name'];
   //$name = '피카츄';
 
   $name_select_sql = "select * from user where name = '?'";
@@ -14,9 +14,5 @@
 
   echo(json_encode($arrayList,JSON_UNESCAPED_UNICODE));
 
-  // $con = mysqli_connect('localhost', 'root', '', 'jquery');
-  //$name_select_sql = "select * from user where name = '$name'";
-  // $result = mysqli_query($con, $name_select_sql);
-  // $row = mysqli_fetch_array($result);
 
  ?>

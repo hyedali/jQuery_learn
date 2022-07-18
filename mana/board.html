@@ -16,6 +16,8 @@
     const trEle = "<tr></tr>";
     const tdEle = "<td></td>";
 
+    let col_cnt = 0;
+
     function spanClassEle(i){
       return "<span class='col"+i+"'></span>";
     }
@@ -27,7 +29,38 @@
       $('center').append(divEle);
       $('center div:eq(0)').attr('id', 'title');
 
-      $('#title').append("<h2>게시판</h2>");
+      $('#title').append("<h2>게시판</h2><p>");
+
+      $('#title').append("<div id='searchBox'></div>");
+
+      $('#searchBox').append('<input type="text" id="search"/>&nbsp;');
+
+      $(document).on('keyup', '#search', function() {
+        $.ajax({
+          url: 'board_search.php',
+          type: 'post',
+          dataType:'json',
+          success:function(data){
+            for(i=0; i<data.length; i++){
+              $('#boardList').append(liEle);
+              //alert(data[i].title);
+              for(j=1; j<6; j++){
+                $('.lavel:eq('+(col_cnt+i+1)+')').append(spanClassEle(j)).css('list-style', 'none');
+                $('.lavel:eq('+(col_cnt+i+1)+') .col'+j).css({
+                  'display':'inline-block',
+                  'text-align':'center',
+                  'width':'120px'
+                })
+              }
+              $('.lavel:eq('+(col_cnt+i+1)+') .col1').text(i+1);
+              $('.lavel:eq('+(col_cnt+i+1)+') .col2').html("<a href='#' onclick='content("+data[i].seq+","+i+")'style='text-decoration: none;'>"+data[i].title+"</a>");
+              $('.lavel:eq('+(col_cnt+i+1)+') .col3').text(data[i].writer);
+              $('.lavel:eq('+(col_cnt+i+1)+') .col4').text(data[i].regdate.substr(0,10));
+              $('.lavel:eq('+(col_cnt+i+1)+') .col5').text(data[i].cnt);
+            }
+          }
+        });
+      });
 
       $('#title').append(divEle);
       $('#title div').attr('id', 'boardTable');
@@ -73,8 +106,7 @@
         url: 'board.php',
         dataType:'json',
         success:function(data){
-          //var data = JSON.parse(data);
-          //alert(data.length);
+          col_cnt = data.length;
           for(i=0; i<data.length; i++){
             $('#boardList').append(liEle);
             //alert(data[i].title);
@@ -94,6 +126,7 @@
           }
         }
       });
+
 
     });
 

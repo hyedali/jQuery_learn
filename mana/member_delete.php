@@ -1,7 +1,7 @@
 <?php
   include 'DB.php';
 
-  $userid = $_GET['userid'];
+  $userid = $_POST['userid'];
   //$userid = 'test3';
 
   $user_delete_sql = "delete from user where id='?'";
